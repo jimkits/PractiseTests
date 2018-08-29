@@ -4,52 +4,47 @@ namespace PractiseHackerrank
 {
     public class LongestSentence
     {
-        [Fact]
-        public void Test()
+        [Theory]
+        [InlineData(" hello world.biggest sentence is this one.nop!")]
+        [InlineData(" hello world.biggest sentence is this one..nop!")]
+        public void Test(string text)
         {
             /*
              * The string has sentenses, separated by [.], [!] or [?]
              * Return the sentence that has the most words, separated by single space
              */
 
-            var result = BiggestSentense(" hello world. biggest sentence  is this one . nop! ");
+            var result = BiggestSentenceD(text);
 
             Assert.Equal(5, result);
         }
 
-        private int BiggestSentense(string sentense)
+        private int BiggestSentenceD(string text)
         {
-            // Split the sentense by . or !
-            var sentencesArray = sentense.Split(' ');
-            var sentencesLength = sentencesArray.Length;
-            var wordCount = 0;
-            var highestNumber = 0;
+            var sentences = text.Split(new char[] { '.', '!', '?' });
+            var biggestSentence = 0;
 
-            for (int i = 0; i < sentencesLength; i++)
+            foreach(var sentence in sentences)
             {
-                if (sentencesArray[i] != "" && sentencesArray[i] != ".")
+                var words = sentence.Split(' ');
+
+                var tempCount = 0;
+
+                foreach(var word in words)
                 {
-                    wordCount += 1;
+                    if (!string.IsNullOrEmpty(word))
+                    {
+                        tempCount++;
+                    }
                 }
 
-                //if (sentencesArray[i] == ".")
-                //{
-                //    wordCount -= 1;
-                //}
-
-                if (sentencesArray[i].Contains(".") || sentencesArray[i].Contains("!"))
+                if(tempCount > biggestSentence)
                 {
-                    if (wordCount > highestNumber)
-                    {
-                        highestNumber = wordCount;
-                        wordCount = 0;
-                    }
+                    biggestSentence = tempCount;
                 }
             }
 
-            // return the number of words in the biggest sentence.
-
-            return highestNumber;
+            return biggestSentence;
         }
     }
 }
